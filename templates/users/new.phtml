@@ -1,0 +1,9 @@
+<!-- 
+Форма создания нового юзера, которая отправляется через обработчик POST /courses на 
+главную страницу в случае если она проходит проверку.
+-->
+<!-- /users -->
+<form action="<?= $url; ?>" method="post">
+    <?php require __DIR__ . './__form.phtml' ?>
+    <input type="submit" value="Sign Up">
+</form>

@@ -1,0 +1,23 @@
+<!-- для простого массива -->
+<h3>Список пользователей:</h3>
+<ol>
+    <?php for ($i = 0; $i < count($userslist); $i++) : ?>
+    <li>
+        <?= $userslist[$i] ?>
+    </li>
+    <?php endfor ?>
+</ol>
+
+<form action="/userslist" method="get">
+    <input type="search" required name="term" value="<?= htmlspecialchars($term) ?>" />
+  <input type="submit" value="Search" />
+</form>
+
+<?php if ($term !== null) : ?>
+    <p>Результаты поиска: <?php foreach ($searchResult as $name) : ?> 
+        <ul>
+            <li> <?= $name ?> </li>
+        </ul>
+    <?php endforeach; ?>
+    </p>
+<?php endif; ?>

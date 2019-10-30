@@ -1,0 +1,4 @@
+Для запуска приложения в консоли:
+cd domains\TestWebHexlet\hexlet-slim-exampl
+php -S localhost:8000 -t public public/index.php
+

@@ -1,0 +1,19 @@
+<a href="/posts">Посты</a>
+
+<!-- BEGIN (write your solution here) -->
+<!-- Вариант для меня: выводит все данные -->
+<?php foreach ($post as $key => $value): ?>
+    <!--  <div>
+    <?= $key ?>: <?= $post['id'] ?>
+      </div>-->
+<?php endforeach ?>
+<!-- END -->
+
+<!-- Вариант для задания с hexlet -->
+<h3>
+    <!-- Не понятно зачем защита, но ладно) -->
+    name: <?= htmlspecialchars($post['name']) ?>
+</h3>
+<div>
+    body: <?= $post['body'] ?>
+</div>

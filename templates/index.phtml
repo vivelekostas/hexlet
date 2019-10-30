@@ -1,0 +1,54 @@
+<h3>Благодарен Богу за Алёнку!</h3>
+
+<?php foreach ($messages as $key => $value) : ?>
+    <?php foreach ($value as $key => $value1) : ?>        
+        <div>
+            <?= $value1 ?>
+        </div>
+        <br>
+    <?php endforeach ?>
+<?php endforeach ?>
+
+<!--Если юзер залогинен, т.е. ссодержиться в массиве $_SESSION, 
+то появтися конопка "выйти" и доступ к меню сайта)-->        
+<?php if ($currentUser) : ?>
+    Привет <?php echo $currentUser['name'] ?>!
+    <form action="/session" method="post">
+        <input type="hidden" name="_METHOD" value="DELETE"> 
+        <div>
+            <input type="submit" value="Выйти">
+        </div>
+    </form>
+
+    <a href="<?= $urlUsers ?>">Пользователи</a>
+    <br>
+    <a href="<?= $urlCourses ?>">Курсы</a>
+    <br>
+    <a href="<?= $urlPosts ?>">Посты</a>
+
+<?php endif ?>
+
+<!--А если не залогинен, то предлогает аутентификацию пройти и
+тогда только доступ к меню будет.-->        
+<?php if (!$currentUser) : ?>
+    <form action="/session" method="post">
+        <div>
+            <label>
+                Name
+                <input type="text" required name="user[name]" value="">
+            </label>
+        </div>
+        <br>
+        <div>
+            <label>
+                Password
+                <input type="text" required name="user[password]" value="">
+            </label>
+        </div>
+        <br>
+        <input type="submit" value="Войти">
+    </form>
+<?php endif ?>
+
+
+    

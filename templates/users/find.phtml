@@ -1,0 +1,37 @@
+<a href="<?= $urlMain ?>">На Главную</a>
+<br><br>
+<!-- для вложенного -->
+<!--<h3>Список пользователей:</h3>
+<ol>
+    <?php foreach ($userslist as $value) : ?>
+        <li>
+            ID: <?= $value['id'] ?>, 
+            firstName: <?= $value['firstName'] ?>, 
+            lastName: <?= $value['lastName'] ?>, 
+            email: <?= $value['email'] ?><br> 
+        </li>
+    <?php endforeach; ?> 
+</ol>-->
+
+<form action="<?= $urlFind ?>" method="get">
+    <input type="search" required name="term" value="<?= htmlspecialchars($term) ?>" />
+  <input type="submit" value="Search" />
+</form>
+
+<?php if ($term !== null) : ?>
+
+<?php if($searchResult[0] === 'Увы, тут нет таких имён!') : ?>
+<p>Результаты поиска: Увы, тут нет таких имён!</p>
+<?php endif; ?> 
+<?php if(!($searchResult[0] === 'Увы, тут нет таких имён!')) : ?>
+    <p>Результаты поиска: <?php foreach ($searchResult as $value) : ?> 
+        <li>
+            ID: <?= $value['id'] ?>, 
+            firstName: <?= $value['firstName'] ?>, 
+            lastName: <?= $value['lastName'] ?>, 
+            email: <?= $value['email'] ?><br> 
+        </li>
+    <?php endforeach; ?>
+    </p>
+   <?php endif; ?> 
+<?php endif; ?>

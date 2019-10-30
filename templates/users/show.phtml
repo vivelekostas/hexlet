@@ -1,0 +1,42 @@
+<!--<h3>Таблица Пользователей</h3>-->
+<?php foreach ($messages as $key => $value) : ?>
+    <?php foreach ($value as $key => $value1) : ?>        
+        <div>
+            <?= $value1 ?>
+        </div>
+<hr><hr><hr><hr>
+
+    <?php endforeach ?>
+<?php endforeach ?>
+
+<a href="<?= $urlUsers ?>">Список пользователей</a>
+<br>
+<br>
+<table>
+    <tr>
+    <b>Инфо о пользователе:</b>
+</tr>
+<tr style="color: red">
+    <td>ID</td>
+    <td>firstName</td>      
+    <td>lastName</td>
+    <td>email</td>
+</tr>
+<tr>
+    <?php if ($user) : ?>
+        <?php foreach ($user as $key => $value) : ?>
+            <td>
+                <?= $value ?>
+            </td>
+        <?php endforeach ?>
+    <?php endif; ?>
+</tr>
+</table>
+<br>
+<a href="<?= $user['id'] ?>/edit">Обновить данные пользователя</a>
+<br>
+<br><span>Удалить пользователя: </span>
+<form action="/users/<?= $user['id'] ?>" method="post">
+  <input type="hidden" name="_METHOD" value="DELETE">
+  <input type="submit" value="Remove">
+</form>

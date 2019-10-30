@@ -1,0 +1,240 @@
+
+изначальный вариант index
+
+<h3>Благодарен Богу за Алёнку!</h3>
+
+
+<?php foreach ($messages as $key => $value) : ?>
+    <?php foreach ($value as $key => $value1) : ?>        
+        <div>
+            <?= $value1 ?>
+        </div>
+    <?php endforeach ?>
+<?php endforeach ?>
+
+<a href="<?= $urlUsers ?>">Пользователи</a>
+<br>
+<a href="<?= $urlCourses ?>">Курсы</a>
+
+================================================================================
+Скрипт для аутентификации.
+$users = [
+    ['name' => 'admin', 'passwordDigest' => hash('sha256', 'secret')],
+    ['name' => 'mike', 'passwordDigest' => hash('sha256', 'superpass')],
+    ['name' => 'kate', 'passwordDigest' => hash('sha256', 'strongpass')]
+];
+
+// BEGIN (write your solution here)
+$app->get('/', function ($request, $response) {
+    $messages = $this->get('flash')->getMessages();
+    $params = [
+        'flash' => $messages,
+        'currentUser' => isset($_SESSION['user']) ? $_SESSION['user'] : null
+    ];
+    return $this->get('renderer')->render($response, 'index.phtml', $params);
+});
+
+$app->post('/session', function ($request, $response) use ($users) {
+    $userData = $request->getParsedBodyParam('user');
+    $userData['password'] = hash('sha256', $userData['password']);
+    foreach ($users as $user) {
+        if (($user['name'] == $userData['name']) && ($user['passwordDigest'] == $userData['password'])) {
+            $_SESSION['user'] = $userData;
+            return $response->withRedirect('/');            
+        }
+    }
+    $this->get('flash')->addMessage('error', 'Wrong password or name');
+    return $response->withRedirect('/');   
+});
+
+$app->delete('/session', function ($request, $response) {
+    $_SESSION = [];
+    session_destroy();
+    return $response->withRedirect('/');
+});
+// END
+
+Шаблон для неё:
+<?php if (count($flash) > 0): ?>
+  <ul>
+  <?php foreach ($flash as $messages): ?>
+      <?php foreach ($messages as $message): ?>
+          <li><?= $message ?></li>
+      <?php endforeach ?>
+  <?php endforeach ?>
+  </ul>
+<?php endif ?>
+
+<!-- BEGIN (write your solution here) -->
+<?php if (!$currentUser) : ?>
+    <form action="/session" method="post">
+      
+        <label>
+            Name
+            <input type="text" required name="user[name]" value="">
+        </label>
+       
+        <br>
+        
+            <label>
+                Password
+                <input type="text" required name="user[password]" value="">
+            </label>
+       
+        <br>
+   
+            <input type="submit" value="Sign In">
+    
+    </form>
+<?php endif ?>
+
+<?php if ($currentUser) : ?>
+    привет <?php echo $username['name'] ?>!
+    <form action="/session" method="post">
+        <input type="hidden" name="_METHOD" value="DELETE"> 
+        <div>
+            <input type="submit" value="Sign Out">
+        </div>
+    </form>
+<?php endif ?>
+<!-- END -->
+
+META===========================================================================
+<!-- Meta -->
+<meta charset="utf-8">
+<meta name="author" content="Abnmt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="http://komedianty.com"/>
+<!-- Favicons -->
+{% partial "favicons" %}
+<!-- Styles -->
+{% styles %}
+<link href="{{ [ 'assets/css/main.css' ]|theme }}" rel="stylesheet">
+
+<!-- PixelVK -->
+<script type="text/javascript">!function(){var t=document.createElement("script");
+    t.type="text/javascript",
+    t.async=!0,
+    t.src="https://vk.com/js/api/openapi.js?162",
+    t.onload=function(){VK.Retargeting.Init("VK-RTRG-415571-10reZ"),VK.Retargeting.Hit()},document.head.appendChild(t)}();
+</script>
+<noscript><img src="https://vk.com/rtrg?p=VK-RTRG-415571-10reZ" style="position:fixed; left:-999px;" alt=""/></noscript>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+ym(52071387, "init", {
+id:52071387,
+clickmap:true,
+trackLinks:true,
+accurateTrackBounce:true,
+webvisor:true
+});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/52071387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Modernizr -->
+<script src="{{ [ 'assets/js/modernizr.min.js' ]|theme }}"></script>
+
+===============================================================================
+
+HEADER=========================================================================
+[viewBag]
+==
+<!-- Header -->
+<header id="masthead" role="banner" class="site-header">
+	<div class="container">
+		<div class="wrap">
+
+			<div class="main-logo">
+				<a href="/" title="На главную">
+					<div class="logo">
+
+						{% partial 'logo' %}
+
+					</div>
+					<div class="title">
+						<div class="top">Театр</div>
+						<div class="main">Комедианты</div>
+					</div>
+				</a>
+			</div>
+
+			<div class="descriptor">
+				<div class="items">
+					<div class="item text company">ЛО ГБУК «Драматический театр «Комедианты»</div>
+					<div class="item text address">СПб, Лиговский пр., д. 44</div>
+					<div class="item text ticket">Касса: 764−81−14</div>
+					<div class="item social-top">
+						<a href="//vk.com/teatrkomediantispb" target="_blank" class="social-items vk"><i class="fa fa-vk"></i></a>
+						{# <a href="/" class="social-items facebook"><i class="fa fa-facebook"></i></a> #}
+						{# <a href="/" class="social-items google-plus"><i class="fa fa-google-plus"></i></a> #}
+						<a href="//www.youtube.com/channel/UChJjDGGECyPCIQuQIFHaoww" target="_blank" class="social-items youtube"><i class="fa fa-youtube-play"></i></a>
+						{# <a href="/" class="social-items vimeo"><i class="fa fa-vimeo-square"></i></a> #}
+						{# <a href="/" class="social-items twitter"><i class="fa fa-twitter"></i></a> #}
+						{# <a href="/" class="social-items rss"><i class="fa fa-rss"></i></a> #}
+						<a href="//www.instagram.com/komedianty/" target="_blank" class="social-items instagram"><i class="fa fa-instagram"></i></a>
+					</div>
+					<div class="item search">
+						<a href="#"><i class="fa fa-search"></i></a>
+					</div>
+				</div>
+			</div>
+
+			<nav id="site-navigation" role="navigation" class="main-navigation">
+
+				{% component 'staticMenu' %}
+
+			</nav>
+
+		</div>
+	</div>
+</header><!-- #masthead-->
+
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+{"id":"4", "firstName":"Murcha", "lastName":"Ogurcha", "email":"kus@gmail.com"}
+=======================================
+<!-- для простого массива -->
+<h3>Список пользователей:</h3>
+<ol>
+    <?php for ($i = 0; $i < count($userslist); $i++) : ?>
+    <li>
+        <?= dd($userslist[$i]) ?>
+        <?= $userslist[$i] ?>
+    </li>
+    <?php endfor ?>
+</ol>
+=======================================
+ <?= dd($userslist[$i]) ?>
+        <?= $userslist[$i] ?>
+=======================================
+ <tr>
+         <?php foreach ($user as $key => $value) : ?>
+        <td>
+            <?= $key ?>: <?= $value ?>
+        </td>
+        <td>
+            <?= $firstName ?>
+        </td>
+        <td>
+            <?= $lastName ?>
+        </td>
+        <td>
+            <?= $email ?>
+        </td>
+    </tr>

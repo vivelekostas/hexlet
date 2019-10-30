@@ -1,0 +1,49 @@
+<!--Общий шаблон формы для создания и обновления юзера.-->
+        <!--1)в атрибуте name значение заданно в виде асац.массива, и каждое значение его определяется, 
+            как ключ в этом массиве. Т.е в него, в качестве значения этого ключа, подставляется то, 
+            что ввёл пользователь.
+            2)в атрибуте value идёт подстановка значений введённых пользователем, 
+            это поможет реализовать проверку. Этот код ($course['title'] ?? '') подставит в атрибут 
+            value либо введённые данные или пустоту), и либо то, либо другое отправить на сервер.
+            * На сервер отправляется пара «имя=значение», где имя задается атрибутом
+            name тега <input>, а значение — атрибутом value.-->
+<div>
+    <label>
+        ID
+        <input type="text" name="user[id]" value="<?= htmlspecialchars($user['id'] ?? '') ?>">
+    </label>
+    <?php if (isset($errors['id'])): ?>
+        <div><?= $errors['id'] ?></div>
+    <?php endif ?>
+</div>
+<br>
+<div>
+    <label>
+        Имя
+        <input type="text" name="user[firstName]" value="<?= htmlspecialchars($user['firstName'] ?? '') ?>">
+    </label>
+    <?php if (isset($errors['firstName'])): ?>
+        <div><?= $errors['firstName'] ?></div>
+    <?php endif ?>
+</div>
+<br>
+<div>
+    <label>
+        Фамилия
+        <input type="text" name="user[lastName]" value="<?= htmlspecialchars($user['lastName'] ?? '') ?>">
+    </label>
+    <?php if (isset($errors['lastName'])): ?>
+        <div><?= $errors['lastName'] ?></div>
+    <?php endif ?>
+</div>
+<br>
+<div>
+    <label>
+        email
+        <input type="text" name="user[email]" value="<?= htmlspecialchars($user['email'] ?? '') ?>">
+    </label>
+    <?php if (isset($errors['email'])): ?>
+        <div><?= $errors['email'] ?></div>
+    <?php endif ?>
+</div>
+<br>

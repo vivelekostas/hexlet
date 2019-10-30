@@ -1,0 +1,10 @@
+<!--Шаблон формы изменения юзера-->
+<form action="/users/<?= htmlspecialchars($user['id']) ?>" method="post">
+    <!--
+    Говорит фреймворку, какой метод мы бы хотели использовать, ведь значение method в HTML 
+    предполагает только post или get, а нам нужно использовать patch.
+    -->
+    <input type="hidden" name="_METHOD" value="PATCH"> 
+    <?php require __DIR__ . './__form.phtml' ?>
+    <input type="submit" value="Update">
+</form>
